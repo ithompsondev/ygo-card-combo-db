@@ -1,0 +1,3 @@
+effect monster [junk synchron] >> normal summon >> special summon from hand [doppel warrior]
+effect monster [doppel warrior] >> monster special summoned from grave >> special summon to field [doppel warrior]
+normal spell [tuning] >> send top card from deck to gy >> search synchron tuner [junk synchron]
