@@ -10,17 +10,21 @@ class CardParse:
     EFFECT_MATCH = 4
     STARTER_MATCH = NAME_MATCH
     ENDER_MATCH = 5
+    ENDER_TYPE_MATCH = 6
 
     def __init__(self,file_name):
         self.file_name = file_name
         self.cards = []
         self.combos = []
-        self.regex = r"(\w+[\w+\s]+)\s\[(\w+[\w+\s]*)\]\s>>\s(\w+[\w+\s]*)\s>>\s(\w+[\w+\s]*)\s\[(\w+[\w+\s]*)\]"
+        self.regex = r"(\w+[\w+\s]+)\s\[(\w+[\w+\s]*)\]\s>>\s(\w+[\w+\s]*)\s>>\s(\w+[\w+\s]*)\s>>\s(\w+[\w+\s]+)\s\[(\w+[\w+\s]*)\]"
         
-        
+
+    # Handle text with commas in regex
+    # Handle exessive white space between entries/ or make it a rule
     def parse(self):
         file = self.open_file()
         for line in file:
+            # print(line)
             match = re.search(self.regex,line)
             self.process_new_card_matches(match)
             self.process_new_combo_matches(match)
@@ -41,9 +45,12 @@ class CardParse:
             "starter": match.group(self.STARTER_MATCH).lower(),
             "cost": match.group(self.COST_MATCH).lower(),
             "effect": match.group(self.EFFECT_MATCH).lower(),
-            "ender": match.group(self.ENDER_MATCH).lower()
+            "ender": match.group(self.ENDER_TYPE_MATCH).lower(),
+            "ender_type": match.group(self.ENDER_MATCH).lower()
         }
 
+        for key in new_combo.keys():
+            print(key + ": " + new_combo[key])
         self.combos.append(new_combo)
 
     
@@ -57,8 +64,8 @@ class CardParse:
 def main():
     parser = CardParse('test.txt')
     parser.parse()
-    print(parser.cards)
-    print(parser.combos)
+    # print(parser.cards)
+    # print(parser.combos)
 
 if __name__ == '__main__':
     main()
